@@ -20,16 +20,35 @@ class game:
 	# TICK_RATE, variable initialized with amount of frames to be displayed 
 	# per second (FPS - Frames Per Second)
 	TICK_RATE = 60
-	# Initializer of game class , taking in title, width, and height parameters
+	# Initializer for game class , taking in title, width, and height parameters
 	def __init__(self, title, width, height):
 		# Class attributes  
 		self.title = title
 		self.width = width 
 		self.height = height
-		# Set up game window, takes class attribute of width and height as parameter
+		# Set up game window with specified parameter of width and height 
 		self.game_screen = pygame.display.set_mode((self.width, self.height))
-		# Set game window to the RBG color of white
+		# Set game window color to  white
 		self.game_screen.fill(WHITE_COLOR)
+
+	# Function containing Main game loop
+	def run_game_loop(self):
+		# Boolean variable used to determine how long while loop is ran
+		is_game_over = False
+
+		# Main game loop used to control gameplay such as events, object control etc
+		while not is_game_over:
+			#  for-loop to get any events that occur in game
+		 	for event in pygame.event.get():
+		 		if event.type == pygame.QUIT:
+		 			is_game_over = True
+		 		print(event)
+
+		 	# update all game graphics
+			pygame.display.update()
+			# Update game clock with FPS
+			clock.tick(self.TICK_RATE)
+
 
 # Exit pygame console
 pygame.quit()
