@@ -12,14 +12,15 @@ BLACK_COLOR = (0, 0, 0)
 
 # Create a clock object from the pygame time module
 clock = pygame.time.Clock()
-
+pygame.font.init()
+font = pygame.font.SysFont('comicsans', 75)
 # Create Game class to control flow of game data
 class Game: 
 
 	# Frames per second of game
 	TICK_RATE = 60
 
-	def __init__(self, title, width, height):
+	def __init__(self, title, image_path, width, height):
 		# Class attributes  
 		self.title = title
 		self.width = width 
@@ -28,12 +29,16 @@ class Game:
 		self.game_screen = pygame.display.set_mode((self.width, self.height))
 		# Set game window color to  white
 		self.game_screen.fill(WHITE_COLOR)
+		image = pygame.image.load(image_path)
+		self.background_image = pygame.transform.scale(image, (self.width, self.height))
 
 	# Method containing Main game loop
 	def run_game_loop(self):
 		# Boolean variable used to determine how long while loop is ran
 		is_game_over = False
+		did_win = False
 		direction = 0
+		
 
 		player_character = PlayerObject('player.png', 375, 700, 50, 50)
 		enemy_0 = EnemyObject('enemy.png', 20, 400, 50, 50)	
@@ -58,6 +63,12 @@ class Game:
 			# Change screen blank after every frame change
 			self.game_screen.fill(WHITE_COLOR)
 
+			# Draw backgroud to game
+			self.game_screen.blit(self.background_image, (0, 0))
+
+			# Draw treasure object to game
+			treasure.draw(self.game_screen)
+
 			# Draw player character to game
 			player_character.draw(self.game_screen)
 			# Move player character in game
@@ -68,16 +79,35 @@ class Game:
 			# Move enemy_0 character in game
 			enemy_0.move(self.width)
 
+			# End game if collision between enemy and treasure
+			if player_character.detect_collision(enemy_0):
+				is_game_over = True
+				did_win = False
+				text = font.render('You lose! :(',True, BLACK_COLOR)
+				self.game_screen.blit(text,(300, 350))
+				pygame.display.update()
+				clock.tick(1)
+				break
+			elif player_character.detect_collision(treasure):
+				is_game_over = True
+				did_win = True
+				text = font.render('You Win! :)',True, BLACK_COLOR)
+				self.game_screen.blit(text,(300, 350))
+				pygame.display.update()
+				clock.tick(1)
+				break
+
 			# update all game graphics
 			pygame.display.update()
 			# Update game clock with FPS
 			clock.tick(self.TICK_RATE)
+			
+		if did_win:
+			self.run_game_loop()
+		else:
+			return
 
-			if player_character.detect_collision(enemy_0):
-				is_game_over = True
-			elif player_character.detect_collision(treasure):
-				is_game_over = True
-
+			
 # GameObject class base class of subclasses player and enemy objects
 class GameObject:
 
@@ -120,18 +150,24 @@ class PlayerObject(GameObject):
 		if self.y_pos > max_height - 40:
 			self.y_pos = max_height - 40
 
-	def detect_collision(self, object_body):
-		if self.y_pos > object_body.y_pos + object_body.height:
+	# Return False (no collision) if y positions and x positions do not overlap
+	# Return True x and y overlap
+	def detect_collision(self, other_body):
+		if self.y_pos > other_body.y_pos + other_body.height:
 			return False
-		elif self.y_pos + self.height < object_body.y_pos:
+		elif self.y_pos + self.height < other_body.y_pos:
 			return False
 
-		if self.x_pos > object_body.x_pos + object_body.width:
+		if self.x_pos > other_body.x_pos + other_body.width:
 			return False
-		elif self.x_pos + self.width < object_body.x_pos:
+		elif self.x_pos + self.width < other_body.x_pos:
 			return False
 
 		return True
+
+                # Player character stays inbound of game window boundary 
+		if self.y_pos > max_height - 40:
+			self.y_pos = max_height - 40
 
 # Class represents enemy character in game 
 class EnemyObject(GameObject):
@@ -152,7 +188,8 @@ class EnemyObject(GameObject):
 			self.SPEED = -abs(self.SPEED)
 		self.x_pos += self.SPEED
 
-new_game = Game(SCREEN_TITLE, SCREEN_WIDTH, SCREEN_HEIGHT)
+pygame.init()
+new_game = Game(SCREEN_TITLE, 'background.png', SCREEN_WIDTH, SCREEN_HEIGHT)
 new_game.run_game_loop()
 
 # Exit pygame console
