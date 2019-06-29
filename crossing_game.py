@@ -58,9 +58,6 @@ class Game:
 			# Change screen blank after every frame change
 			self.game_screen.fill(WHITE_COLOR)
 
-			# Draw treasure object to game
-			treasure.draw(self.game_screen)
-
 			# Draw player character to game
 			player_character.draw(self.game_screen)
 			# Move player character in game
@@ -123,21 +120,18 @@ class PlayerObject(GameObject):
 		if self.y_pos > max_height - 40:
 			self.y_pos = max_height - 40
 
-	# Return False (no collision) if y positions and x positions do not overlap
-	# Return True x and y overlap
-	def detect_collision(self, other_body):
-		if self.y_pos > other_body.y_pos + other_body.height:
+	def detect_collision(self, object_body):
+		if self.y_pos > object_body.y_pos + object_body.height:
 			return False
-		elif self.y_pos + self.height < other_body.y_pos:
+		elif self.y_pos + self.height < object_body.y_pos:
 			return False
 
-		if self.x_pos > other_body.x_pos + other_body.width:
+		if self.x_pos > object_body.x_pos + object_body.width:
 			return False
-		elif self.x_pos + self.width < other_body.x_pos:
+		elif self.x_pos + self.width < object_body.x_pos:
 			return False
 
 		return True
-
 
 # Class represents enemy character in game 
 class EnemyObject(GameObject):
