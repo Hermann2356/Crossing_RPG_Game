@@ -17,6 +17,7 @@ font = pygame.font.SysFont('comicsans', 75)
 # Create Game class to control flow of game data
 class Game: 
 
+
 	# Frames per second of game
 	TICK_RATE = 60
 
@@ -33,15 +34,28 @@ class Game:
 		self.background_image = pygame.transform.scale(image, (self.width, self.height))
 
 	# Method containing Main game loop
-	def run_game_loop(self):
+	def run_game_loop(self,level_speed):
 		# Boolean variable used to determine how long while loop is ran
 		is_game_over = False
 		did_win = False
 		direction = 0
-		
 
+		# Player object
 		player_character = PlayerObject('player.png', 375, 700, 50, 50)
-		enemy_0 = EnemyObject('enemy.png', 20, 400, 50, 50)	
+		# Empty array used to store enemy objects
+		enemy = []
+		# Add enemy objects to array using append method
+		enemy.append(EnemyObject('enemy.png', 20, 600, 50, 50))	
+		enemy.append(EnemyObject('enemy.png', self.width - 40, 400, 50, 50))
+		enemy.append(EnemyObject('enemy.png', 20, 200, 50, 50))
+		# Increase enemy[0] speed
+		enemy[0].SPEED *= level_speed
+		# Increase enemy[1] speed
+		enemy[1].SPEED *= level_speed
+		# Increase enemy[2] speed
+		enemy[2].SPEED *= level_speed
+
+		# Treasure object
 		treasure = GameObject('treasure.png', 375, 50, 50, 50)
 
 		# Main game loop used to control gameplay such as events, object control etc
@@ -73,14 +87,49 @@ class Game:
 			player_character.draw(self.game_screen)
 			# Move player character in game
 			player_character.move(direction, self.height)
-
+			
+			
 			# Draw enemy character to game
-			enemy_0.draw(self.game_screen)
+			enemy[0].draw(self.game_screen)
 			# Move enemy_0 character in game
-			enemy_0.move(self.width)
+			enemy[0].move(self.width)
+
+			# Add new enemy when level_sped  reaches 3
+			if level_speed > 2:
+				# Draw enemy character to game
+				enemy[1].draw(self.game_screen)
+				# Move enemy_0 character in game
+				enemy[1].move(self.width)
+
+			# Add new enemy when level_sped reaches 5
+			if level_speed > 4:
+				# Draw enemy character to game
+				enemy[2].draw(self.game_screen)
+				# Move enemy_0 character in game
+				enemy[2].move(self.width)
+
+
+
+
 
 			# End game if collision between enemy and treasure
-			if player_character.detect_collision(enemy_0):
+			if player_character.detect_collision(enemy[0]):
+				is_game_over = True
+				did_win = False
+				text = font.render('You lose! :(',True, BLACK_COLOR)
+				self.game_screen.blit(text,(300, 350))
+				pygame.display.update()
+				clock.tick(1)
+				break
+			elif player_character.detect_collision(enemy[1]):
+				is_game_over = True
+				did_win = False
+				text = font.render('You lose! :(',True, BLACK_COLOR)
+				self.game_screen.blit(text,(300, 350))
+				pygame.display.update()
+				clock.tick(1)
+				break
+			elif player_character.detect_collision(enemy[2]):
 				is_game_over = True
 				did_win = False
 				text = font.render('You lose! :(',True, BLACK_COLOR)
@@ -97,13 +146,16 @@ class Game:
 				clock.tick(1)
 				break
 
+
+
+
 			# update all game graphics
 			pygame.display.update()
 			# Update game clock with FPS
 			clock.tick(self.TICK_RATE)
-			
+
 		if did_win:
-			self.run_game_loop()
+			self.run_game_loop(level_speed + .5)
 		else:
 			return
 
@@ -190,7 +242,7 @@ class EnemyObject(GameObject):
 
 pygame.init()
 new_game = Game(SCREEN_TITLE, 'background.png', SCREEN_WIDTH, SCREEN_HEIGHT)
-new_game.run_game_loop()
+new_game.run_game_loop(1)
 
 # Exit pygame console
 pygame.quit()
