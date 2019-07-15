@@ -15,9 +15,18 @@ clock = pygame.time.Clock()
 pygame.font.init()
 font = pygame.font.SysFont('comicsans', 75)
 scoreFont=pygame.font.SysFont('comicsans', 30)
-# Load game music
+# Load game music & effects
+# Load background music
 pygame.mixer.init()
 pygame.mixer.music.load('Hip_Bone.mp3')
+# Set background music to 0.2  out of 1
+pygame.mixer.music.set_volume(0.2)
+# Load walk sound effect and set volume to 1 out of 1
+walkSound = pygame.mixer.Sound('Walking On Gravel-SoundBible.com-2023303198-[AudioTrimmer.com].wav')
+walkSound.set_volume(1)
+# Load triump and enemy laugh effect
+triumphSound = pygame.mixer.Sound('SMALL_CROWD_APPLAUSE-Yannick_Lemieux-1268806408-[AudioTrimmer.com].wav')
+enemyLaugh = pygame.mixer.Sound('hahaha-Peter_De_Lang-1639076107-[AudioTrimmer.com].wav')
 # Create Game class to control flow of game data
 class Game: 
 
@@ -27,7 +36,7 @@ class Game:
 	# score of game
 	score = 0 
 	# Plays game music
-	pygame.mixer.music.play(0)
+	pygame.mixer.music.play(-1)
 
 
 	def __init__(self, title, image_path, width, height):
@@ -81,11 +90,16 @@ class Game:
 				if event.type == pygame.KEYDOWN:
 					if event.key == pygame.K_UP:
 						direction = 1
+						pygame.mixer.Sound.play(walkSound)
+						pygame.time.delay(100)
 					elif event.key == pygame.K_DOWN:
 						direction = -1
+						pygame.mixer.Sound.play(walkSound)
+						pygame.time.delay(100)
 				elif event.type == pygame.KEYUP:
 					if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
 						direction = 0
+						pygame.mixer.Sound.stop(walkSound)
 				print(event)
 
 
@@ -131,8 +145,12 @@ class Game:
 				self.game_screen.blit(text,(300, 350))
 				self.score=0
 				pygame.display.update()
+				pygame.mixer.Sound.stop(walkSound)
+				pygame.mixer.music.pause()
+				pygame.mixer.Sound.play(enemyLaugh)
 				clock.tick(1)
-				pygame.time.delay(100)
+				pygame.time.delay(6000)
+				pygame.mixer.music.unpause()
 				break
 			elif player_character.detect_collision(enemy[1]):
 				is_game_over = True
@@ -141,8 +159,12 @@ class Game:
 				self.game_screen.blit(text,(300, 350))
 				self.score=0
 				pygame.display.update()
+				pygame.mixer.Sound.stop(walkSound)
+				pygame.mixer.music.pause()
+				pygame.mixer.Sound.play(enemyLaugh)
 				clock.tick(1)
-				pygame.time.delay(100)
+				pygame.time.delay(6000)
+				pygame.mixer.music.unpause()
 				break
 			elif player_character.detect_collision(enemy[2]):
 				is_game_over = True
@@ -151,8 +173,12 @@ class Game:
 				self.game_screen.blit(text,(300, 350))
 				self.score=0
 				pygame.display.update()
+				pygame.mixer.Sound.stop(walkSound)
+				pygame.mixer.music.pause()
+				pygame.mixer.Sound.play(enemyLaugh)
 				clock.tick(1)
-				pygame.time.delay(100)
+				pygame.time.delay(6000)
+				pygame.mixer.music.unpause()
 				break
 			elif player_character.detect_collision(treasure):
 				is_game_over = True
@@ -161,8 +187,12 @@ class Game:
 				self.game_screen.blit(text,(300, 350))
 				self.score +=100
 				pygame.display.update()
+				pygame.mixer.Sound.stop(walkSound)
+				pygame.mixer.music.pause()
+				pygame.mixer.Sound.play(triumphSound)
 				clock.tick(1)
-				pygame.time.delay(100)
+				pygame.time.delay(1000)
+				pygame.mixer.music.unpause()
 				break
 			
 
@@ -229,9 +259,9 @@ class PlayerObject(GameObject):
 		elif self.y_pos + (self.height-11) < other_body.y_pos:
 			return False
 
-		if self.x_pos > other_body.x_pos + (other_body.width-11):
+		if self.x_pos > other_body.x_pos + (other_body.width-12):
 			return False
-		elif self.x_pos + (self.width-11) < other_body.x_pos:
+		elif self.x_pos + (self.width-12) < other_body.x_pos:
 			return False
 
 		return True
