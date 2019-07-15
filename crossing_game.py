@@ -14,12 +14,15 @@ BLACK_COLOR = (0, 0, 0)
 clock = pygame.time.Clock()
 pygame.font.init()
 font = pygame.font.SysFont('comicsans', 75)
+scoreFont=pygame.font.SysFont('comicsans', 30)
 # Create Game class to control flow of game data
 class Game: 
 
 
 	# Frames per second of game
 	TICK_RATE = 60
+	# score of game
+	score = 0 
 
 	def __init__(self, title, image_path, width, height):
 		# Class attributes  
@@ -33,8 +36,14 @@ class Game:
 		image = pygame.image.load(image_path)
 		self.background_image = pygame.transform.scale(image, (self.width, self.height))
 
+	# Method to display score in game
+	def displayScore(self):
+		text = scoreFont.render("SCORE: " + str(self.score),True, WHITE_COLOR)
+		self.game_screen.blit(text,(665, 40))
+		#clock.sleep(10)
+
 	# Method containing Main game loop
-	def run_game_loop(self,level_speed):
+	def run_game_loop(self,level_speed,score):
 		# Boolean variable used to determine how long while loop is ran
 		is_game_over = False
 		did_win = False
@@ -118,36 +127,45 @@ class Game:
 				did_win = False
 				text = font.render('You lose! :(',True, BLACK_COLOR)
 				self.game_screen.blit(text,(300, 350))
+				self.score=0
 				pygame.display.update()
 				clock.tick(1)
+				pygame.time.delay(100)
 				break
 			elif player_character.detect_collision(enemy[1]):
 				is_game_over = True
 				did_win = False
 				text = font.render('You lose! :(',True, BLACK_COLOR)
 				self.game_screen.blit(text,(300, 350))
+				self.score=0
 				pygame.display.update()
 				clock.tick(1)
+				pygame.time.delay(100)
 				break
 			elif player_character.detect_collision(enemy[2]):
 				is_game_over = True
 				did_win = False
 				text = font.render('You lose! :(',True, BLACK_COLOR)
 				self.game_screen.blit(text,(300, 350))
+				self.score=0
 				pygame.display.update()
 				clock.tick(1)
+				pygame.time.delay(100)
 				break
 			elif player_character.detect_collision(treasure):
 				is_game_over = True
 				did_win = True
 				text = font.render('You Win! :)',True, BLACK_COLOR)
 				self.game_screen.blit(text,(300, 350))
+				self.score +=100
 				pygame.display.update()
 				clock.tick(1)
+				pygame.time.delay(100)
 				break
+			
 
-
-
+			# Display score
+			self.displayScore()
 
 			# update all game graphics
 			pygame.display.update()
@@ -155,10 +173,9 @@ class Game:
 			clock.tick(self.TICK_RATE)
 
 		if did_win:
-			self.run_game_loop(level_speed + .5)
+			self.run_game_loop(level_speed + .5, self.score)
 		else:
-			return
-
+			self.run_game_loop(1, self.score)
 			
 # GameObject class base class of subclasses player and enemy objects
 class GameObject:
@@ -242,7 +259,7 @@ class EnemyObject(GameObject):
 
 pygame.init()
 new_game = Game(SCREEN_TITLE, 'background.png', SCREEN_WIDTH, SCREEN_HEIGHT)
-new_game.run_game_loop(1)
+new_game.run_game_loop(1,0)
 
 # Exit pygame console
 pygame.quit()
