@@ -15,6 +15,9 @@ clock = pygame.time.Clock()
 pygame.font.init()
 font = pygame.font.SysFont('comicsans', 75)
 scoreFont=pygame.font.SysFont('comicsans', 30)
+# Load game music
+pygame.mixer.init()
+pygame.mixer.music.load('Hip_Bone.mp3')
 # Create Game class to control flow of game data
 class Game: 
 
@@ -23,6 +26,9 @@ class Game:
 	TICK_RATE = 60
 	# score of game
 	score = 0 
+	# Plays game music
+	pygame.mixer.music.play(0)
+
 
 	def __init__(self, title, image_path, width, height):
 		# Class attributes  
@@ -48,7 +54,7 @@ class Game:
 		is_game_over = False
 		did_win = False
 		direction = 0
-
+		
 		# Player object
 		player_character = PlayerObject('player.png', 375, 700, 50, 50)
 		# Empty array used to store enemy objects
