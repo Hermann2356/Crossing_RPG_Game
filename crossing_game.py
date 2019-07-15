@@ -117,10 +117,6 @@ class Game:
 				# Move enemy_0 character in game
 				enemy[2].move(self.width)
 
-
-
-
-
 			# End game if collision between enemy and treasure
 			if player_character.detect_collision(enemy[0]):
 				is_game_over = True
@@ -222,14 +218,14 @@ class PlayerObject(GameObject):
 	# Return False (no collision) if y positions and x positions do not overlap
 	# Return True x and y overlap
 	def detect_collision(self, other_body):
-		if self.y_pos > other_body.y_pos + other_body.height:
+		if self.y_pos  > other_body.y_pos + (other_body.height-11):
 			return False
-		elif self.y_pos + self.height < other_body.y_pos:
+		elif self.y_pos + (self.height-11) < other_body.y_pos:
 			return False
 
-		if self.x_pos > other_body.x_pos + other_body.width:
+		if self.x_pos > other_body.x_pos + (other_body.width-11):
 			return False
-		elif self.x_pos + self.width < other_body.x_pos:
+		elif self.x_pos + (self.width-11) < other_body.x_pos:
 			return False
 
 		return True
