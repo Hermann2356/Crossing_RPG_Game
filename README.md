@@ -15,6 +15,7 @@ game. Once you have won, the game will restart and the enemy characters will inc
 diffuclt each and every time you win.
 
 ![Screenshot](https://github.com/Hermann2356/Crossing_RPG_Game/blob/master/Screen%20Shot%202020-02-11%20at%202.11.00%20PM.png | width=100)
+<img width="200" src="(https://github.com/Hermann2356/Crossing_RPG_Game/blob/master/Screen%20Shot%202020-02-11%20at%202.11.00%20PM.png">
 
 ## Installation
 
