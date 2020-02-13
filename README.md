@@ -14,7 +14,7 @@ horizontally along the screen. If you can reach the treasure and avoid colliding
 game. Once you have won, the game will restart and the enemy characters will increase in number and speed, making it more 
 diffuclt each and every time you win.
 
-![Screenshot](Screen Shot 2020-02-11 at 2.11.00 PM.png | width=100)
+![Screenshot](https://github.com/Hermann2356/Crossing_RPG_Game/blob/master/Screen%20Shot%202020-02-11%20at%202.11.00%20PM.png | width=100)
 
 ## Installation
 
