@@ -14,6 +14,8 @@ horizontally along the screen. If you can reach the treasure and avoid colliding
 game. Once you have won, the game will restart and the enemy characters will increase in number and speed, making it more 
 diffuclt each and every time you win.
 
+![Screenshot](Screen Shot 2020-02-11 at 2.11.00 PM.png | width=100)
+
 ## Installation
 
 This game uses pygame. Pygame is a free, open source python programming language library for making multimedia applications, 
