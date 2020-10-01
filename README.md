@@ -39,7 +39,7 @@ MAC: https://www.youtube.com/watch?v=FkfWpCPYfN0
 PC: https://www.youtube.com/watch?v=MV-iT5QkBRw
 
 ## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Pull requests are welcomed. For major changes, please open an issue first to discuss what you would like to change.
 But all in all have FUN!!!
 
 
