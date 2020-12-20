@@ -1,4 +1,4 @@
-# Crossing_RPG_Game
+# Crossing-RPG-Game
 
 The Crossing RPG Game is a role playing game,which is built using the pygame library. This game is a project which
 is brought to you  by StackSkills.com - Learn python 3 by making a game.
